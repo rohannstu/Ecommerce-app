@@ -1,4 +1,4 @@
-import { Component, inject, computed, effect } from '@angular/core';
+import { Component, inject, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProductCardComponent } from './product-card/product-card.component';
@@ -44,9 +44,7 @@ export type Product = {
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        @for (product of filteredProducts(); track product.id) {
-          <app-product-card [product]="product" />
-        }
+        <app-product-card *ngFor="let product of filteredProducts()" [product]="product" />
       </div>
     </div>
   `,
@@ -60,10 +58,12 @@ export class ProductsListComponent {
   
   filteredProducts = this.productService.getFilteredProducts;
 
-  constructor() {
-    effect(() => {
-      this.productService.setCategory(this.categoryControl.value || 'all');
-      this.productService.setSearchQuery(this.searchControl.value || '');
+  ngOnInit() {
+    this.categoryControl.valueChanges.subscribe(value => {
+      this.productService.setCategory(value || 'all');
+    });
+    this.searchControl.valueChanges.subscribe(value => {
+      this.productService.setSearchQuery(value || '');
     });
   }
 }

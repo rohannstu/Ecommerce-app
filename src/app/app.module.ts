@@ -20,8 +20,6 @@ import { RouterModule } from '@angular/router';
 @NgModule({
   declarations: [
     AppComponent,
-    ProductsListComponent,
-    ProductCardComponent,
     CartComponent,
     CartItemComponent,
     OrderSummaryComponent,
