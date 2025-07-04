@@ -1,31 +1,35 @@
 import { Component, inject, input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MaterialModule } from '../../../material.module';
 import { Product } from '../../products-list/products-list.component';
-import { ButtonComponent } from '../../../components/button/button.component';
 import { CartService } from '../../../services/cart.service';
 
 @Component({
   selector: 'app-cart-item',
-  imports: [ButtonComponent],
+  standalone: true,
+  imports: [CommonModule, MaterialModule],
   template: `
-    <div
-      class="bg-white shadow-md border rounded-xl p-6 flex gap-4 items-center"
-    >
-      <img [src]="item().image" class="w-[50px] h-[50px] object-contain" />
-      <div class="flex flex-col">
-        <span class="text-md font-bold">{{ item().title }}</span>
-        <span class="text-sm"> {{ '$' + item().price }}</span>
+    <mat-card>
+      <div class="flex items-center gap-4 p-4">
+        <img [src]="item().image" class="w-20 h-20 object-contain" [alt]="item().title" />
+        <div class="flex-1">
+          <h3 class="text-lg font-medium">{{ item().title }}</h3>
+          <p class="text-gray-600">\${{ item().price }}</p>
+        </div>
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="cartService.removeFromCart(item())"
+          matTooltip="Remove from cart"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
       </div>
-      <div class="flex-1"></div>
-      <app-button
-        label="Remove"
-        (btnClicked)="cartService.removeFromCart(item())"
-      />
-    </div>
+    </mat-card>
   `,
   styles: ``,
 })
 export class CartItemComponent {
   item = input.required<Product>();
-
   cartService = inject(CartService);
 }

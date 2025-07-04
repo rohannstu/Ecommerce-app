@@ -1,44 +1,56 @@
 import { Component, inject, input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MaterialModule } from '../../../material.module';
 import { Product } from '../products-list.component';
 import { CartService } from '../../../services/cart.service';
-import { PrimaryButtonComponent } from '../../../components/primary-button/primary-button.component';
 
 @Component({
   selector: 'app-product-card',
-  imports: [PrimaryButtonComponent],
+  standalone: true,
+  imports: [CommonModule, MaterialModule],
   template: `
-    <div
-      class="bg-white shadow-md border rounded-xl p-6 flex flex-col gap-6 relative"
-    >
-      <div class="mx-auto">
-        <img
-          [src]="product().image"
-          class="w-[200px] h-[100px] object-contain"
-        />
-      </div>
-      <div class="flex flex-col">
-        <span class="text-md font-bold">{{ product().title }}</span>
-        <span class="text-sm"> {{ '$' + product().price }}</span>
-        <app-primary-button
-          (btnClicked)="cartService.addToCart(product())"
-          class="mt-3"
-          label="Add to Cart"
-        />
-      </div>
-
-      <span
-        class="absolute top-2 right-3 text-sm font-bold"
-        [class]="product().stock ? 'text-green-500' : 'text-red-500'"
-      >
-        @if (product().stock) {
-        {{ product().stock }} left } @else { Out of stock }
-      </span>
-    </div>
+    <mat-card class="h-full flex flex-col">
+      <img
+        mat-card-image
+        [src]="product().image"
+        [alt]="product().title"
+        class="w-full h-48 object-contain p-4"
+      />
+      <mat-card-content class="flex-1">
+        <h2 class="text-lg font-bold mb-2">{{ product().title }}</h2>
+        <p class="text-gray-600">\${{ product().price }}</p>
+        <div class="mt-2">
+          <span [class]="product().stock ? 'text-green-500' : 'text-red-500'">
+            {{ product().stock ? product().stock + ' left' : 'Out of stock' }}
+          </span>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="cartService.addToCart(product())"
+          [disabled]="!product().stock"
+          class="w-full"
+        >
+          Add to Cart
+        </button>
+      </mat-card-actions>
+    </mat-card>
   `,
-  styles: ``,
+  styles: `
+    :host {
+      display: block;
+    }
+    mat-card {
+      transition: transform 0.2s;
+    }
+    mat-card:hover {
+      transform: translateY(-4px);
+    }
+  `,
 })
 export class ProductCardComponent {
-  cartService = inject(CartService);
-
   product = input.required<Product>();
+  cartService = inject(CartService);
 }

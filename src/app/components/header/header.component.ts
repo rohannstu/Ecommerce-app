@@ -1,23 +1,28 @@
 import { Component, computed, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { MaterialModule } from '../../material.module';
 import { CartService } from '../../services/cart.service';
-import { RouterLink } from '@angular/router';
-import { PrimaryButtonComponent } from '../primary-button/primary-button.component';
 
 @Component({
   selector: 'app-header',
-  imports: [PrimaryButtonComponent, RouterLink],
+  standalone: true,
+  imports: [CommonModule, MaterialModule, RouterModule],
   template: `
-    <div
-      class="bg-slate-100 px-4 py-3 shadow-md flex justify-between items-center"
-    >
-      <button class="text-2xl" routerLink="/">My Store</button>
-      <app-primary-button label="{{ cartLabel() }}" routerLink="/cart" />
-    </div>
+    <mat-toolbar color="primary">
+      <a mat-button routerLink="/" class="text-2xl">My Store</a>
+      <span class="flex-1"></span>
+      <a mat-button routerLink="/cart">
+        <mat-icon [matBadge]="cartItemCount()" matBadgeColor="accent">
+          shopping_cart
+        </mat-icon>
+        Cart
+      </a>
+    </mat-toolbar>
   `,
   styles: ``,
 })
 export class HeaderComponent {
   cartService = inject(CartService);
-
-  cartLabel = computed(() => `Cart (${this.cartService.cart().length})`);
+  cartItemCount = computed(() => this.cartService.cart().length);
 }
