@@ -18,15 +18,7 @@ import { PrimaryButtonComponent } from './components/primary-button/primary-butt
 import { RouterModule } from '@angular/router';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    CartComponent,
-    CartItemComponent,
-    OrderSummaryComponent,
-    HeaderComponent,
-    ButtonComponent,
-    PrimaryButtonComponent
-  ],
+  declarations: [],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -34,7 +26,14 @@ import { RouterModule } from '@angular/router';
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    AppComponent,
+    CartComponent,
+    CartItemComponent,
+    OrderSummaryComponent,
+    HeaderComponent,
+    ButtonComponent,
+    PrimaryButtonComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

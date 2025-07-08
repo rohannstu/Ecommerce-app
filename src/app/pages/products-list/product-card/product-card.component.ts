@@ -9,29 +9,29 @@ import { CartService } from '../../../services/cart.service';
   standalone: true,
   imports: [CommonModule, MaterialModule],
   template: `
-    <mat-card class="h-full flex flex-col">
+    <mat-card class="h-full flex flex-col rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out">
       <img
         mat-card-image
         [src]="product.image"
         [alt]="product.title"
-        class="w-full h-48 object-contain p-4"
+        class="w-full h-48 object-contain p-4 rounded-t-lg"
       />
-      <mat-card-content class="flex-1">
-        <h2 class="text-lg font-bold mb-2">{{ product.title }}</h2>
-        <p class="text-gray-600">\${{ product.price }}</p>
-        <div class="mt-2">
-          <span [class]="product.stock ? 'text-green-500' : 'text-red-500'">
+      <mat-card-content class="flex-1 p-4">
+        <h2 class="text-xl font-semibold mb-2 text-gray-800">{{ product.title }}</h2>
+        <p class="text-lg font-bold text-primary mb-2">\${{ product.price }}</p>
+        <div class="mt-2 text-sm">
+          <span [class]="product.stock ? 'text-green-600' : 'text-red-600'">
             {{ product.stock ? product.stock + ' left' : 'Out of stock' }}
           </span>
         </div>
       </mat-card-content>
-      <mat-card-actions>
+      <mat-card-actions class="p-4 pt-0">
         <button
           mat-raised-button
           color="primary"
           (click)="cartService.addToCart(product)"
           [disabled]="!product.stock"
-          class="w-full"
+          class="w-full py-2 rounded-md text-white font-medium"
         >
           Add to Cart
         </button>
